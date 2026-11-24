@@ -24,6 +24,9 @@ const AnalysisProgress = () => {
 
   const fileName = location.state?.fileName || "Demo video";
   const fileSize = location.state?.fileSize;
+  const uploadResult = location.state?.uploadResult;
+  console.log("UPLOAD RESULT:", uploadResult);
+const videoMetadata = uploadResult?.video_metadata;
 
   const stages = [
     {
@@ -125,6 +128,16 @@ const AnalysisProgress = () => {
           <span className="panel-label">SOURCE VIDEO</span>
           <h2 title={fileName}>{fileName}</h2>
           <p>Uploaded media · {formattedSize}</p>
+
+{videoMetadata && (
+  <div className="video-metadata">
+    <p><strong>Duration:</strong> {videoMetadata.duration_seconds} seconds</p>
+    <p><strong>Frame Rate:</strong> {videoMetadata.fps} FPS</p>
+    <p><strong>Resolution:</strong> {videoMetadata.resolution}</p>
+    <p><strong>Total Frames:</strong> {videoMetadata.frame_count}</p>
+    <p><strong>Audio:</strong> {videoMetadata.has_audio ? "Available" : "Not available"}</p>
+  </div>
+)}
         </div>
 
         <div className="file-verified">

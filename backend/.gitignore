@@ -1,0 +1,19 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Uploaded videos and test files
+uploads/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Temporary installer
+get-pip.py

@@ -55,16 +55,44 @@ const NewAnalysis = () => {
   const formatFileSize = (bytes: number) =>
     (bytes / (1024 * 1024)).toFixed(2) + " MB";
 
-  const startAnalysis = () => {
-    if (!selectedFile) return;
+
+const startAnalysis = async () => {
+  if (!selectedFile) return;
+
+  try {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    const response = await fetch("http://127.0.0.1:8000/upload-video", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.detail || "Video upload failed.");
+    }
 
     navigate("/analysis-progress", {
       state: {
         fileName: selectedFile.name,
         fileSize: selectedFile.size,
+        uploadResult: result,
       },
     });
-  };
+
+  } catch (error) {
+    console.error("Upload error:", error);
+
+    setError(
+      error instanceof Error
+        ? error.message
+        : "Something went wrong while uploading the video."
+    );
+  }
+};
+
 
   return (
     <div className="new-analysis-page">
