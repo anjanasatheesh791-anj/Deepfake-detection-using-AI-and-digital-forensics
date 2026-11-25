@@ -6,6 +6,8 @@ import os
 import shutil
 import uuid
 import av
+from video_processor import extract_frames
+from audio_processor import extract_audio
 
 app = FastAPI(title="Deepfake Detection API")
 
@@ -111,8 +113,10 @@ async def upload_video(file: UploadFile = File(...)):
         container.close()
 
         return {
-            "message": "Video uploaded and validated successfully.",
-            "filename": file.filename,
+           
+    "message": "Video uploaded and validated successfully.",
+    "filename": file.filename,
+    "saved_filename": saved_filename,
             "file_size_mb": round(file_size / (1024 * 1024), 2),
             "video_metadata": {
                 "duration_seconds": round(duration, 2),
@@ -138,3 +142,80 @@ async def upload_video(file: UploadFile = File(...)):
 
     finally:
         await file.close()
+
+
+@app.post("/process-video")
+async def process_video(saved_filename: str):
+    video_path = os.path.join(UPLOAD_DIR, saved_filename)
+
+    if not os.path.exists(video_path):
+        raise HTTPException(
+            status_code=404,
+            detail="Uploaded video was not found."
+        )
+
+    processing_id = uuid.uuid4().hex
+    PROCESSED_DIR = r"C:\deepfake_processed"
+
+    processing_dir = os.path.join(
+        PROCESSED_DIR,
+        processing_id
+    )
+
+    frames_dir = os.path.join(
+        processing_dir,
+        "frames"
+    )
+
+    audio_dir = os.path.join(
+        processing_dir,
+        "audio"
+    )
+
+    try:
+        # Step 1: Extract video frames
+        frame_result = extract_frames(
+            video_path=video_path,
+            output_dir=frames_dir,
+            sample_rate=5
+        )
+
+        # Step 2: Extract audio
+        audio_result = extract_audio(
+            video_path=video_path,
+            output_dir=audio_dir
+        )
+
+        return {
+            "message": "Video and audio processing completed successfully.",
+            "processing_id": processing_id,
+            "saved_filename": saved_filename,
+
+            "frame_extraction": {
+                "total_frames": frame_result["total_frames"],
+                "extracted_frames": frame_result["extracted_frames"],
+                "fps": frame_result["fps"]
+            },
+
+            "audio_extraction": {
+                "audio_filename": audio_result["audio_filename"],
+                "duration_seconds": audio_result["duration_seconds"],
+                "sample_rate": audio_result["sample_rate"],
+                "channels": audio_result["channels"],
+                "format": audio_result["format"]
+            }
+        }
+
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
+
+    except Exception as error:
+        print("VIDEO PROCESSING ERROR:", repr(error))
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Video processing failed: {str(error)}"
+        )

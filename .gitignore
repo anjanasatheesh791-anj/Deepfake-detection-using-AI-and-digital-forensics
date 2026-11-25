@@ -1,0 +1,18 @@
+
+# Python cache and environments
+__pycache__/
+*.py[cod]
+backend/venv/
+.venv/
+
+# Uploaded videos and generated processing files
+backend/uploads/
+backend/processed/
+backend/test_frames/
+backend/test_frame.jpg
+backend/test_audio.py
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example

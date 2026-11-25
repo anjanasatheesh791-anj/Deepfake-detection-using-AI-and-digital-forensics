@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import {
@@ -28,6 +29,60 @@ const AnalysisProgress = () => {
   console.log("UPLOAD RESULT:", uploadResult);
 const videoMetadata = uploadResult?.video_metadata;
 
+const savedFilename = uploadResult?.saved_filename;
+
+const processStarted = useRef(false);
+
+const [processingResult, setProcessingResult] = useState<any>(null);
+const [processingError, setProcessingError] = useState("");
+const [isProcessing, setIsProcessing] = useState(false);
+
+useEffect(() => {
+  if (!savedFilename || processStarted.current) return;
+
+  processStarted.current = true;
+
+  const processVideo = async () => {
+    setIsProcessing(true);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/process-video?saved_filename=${encodeURIComponent(savedFilename)}`,
+        {
+          method: "POST",
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.detail || "Video processing failed."
+        );
+      }
+
+      console.log("VIDEO PROCESSING RESULT:", result);
+
+      setProcessingResult(result);
+
+    } catch (error) {
+      console.error("Video processing error:", error);
+
+      setProcessingError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong during processing."
+      );
+
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  processVideo();
+
+}, [savedFilename]);
+
   const stages = [
     {
       number: "01",
@@ -47,7 +102,7 @@ const videoMetadata = uploadResult?.video_metadata;
       number: "03",
       title: "Face Detection & Landmarks",
       description: "Locating faces and extracting facial landmarks.",
-      status: "processing",
+      status: "pending",
       icon: ScanFace,
     },
     {
@@ -114,7 +169,7 @@ const videoMetadata = uploadResult?.video_metadata;
 
         <div className="progress-live-badge">
           <span className="live-dot"></span>
-          DEMO WORKFLOW
+          VIDEO PROCESSING WORKFLOW
         </div>
       </header>
 
@@ -143,6 +198,71 @@ const videoMetadata = uploadResult?.video_metadata;
         <div className="file-verified">
           <ShieldCheck size={17} />
           <span>FILE SELECTED</span>
+        </div>
+      </section>
+
+            {/* ACTUAL VIDEO PROCESSING RESULTS */}
+      <section className="analysis-file-panel">
+        <div className="analysis-file-details">
+          <h2>Video Processing Results</h2>
+
+          {isProcessing && (
+            <p>Extracting video frames and audio...</p>
+          )}
+
+          {processingError && (
+            <p style={{ color: "red" }}>
+              Processing failed: {processingError}
+            </p>
+          )}
+
+          {processingResult && (
+            <div className="video-metadata">
+              <p>
+                <strong>Status:</strong> Processing Successful
+              </p>
+
+              <p>
+                <strong>Processing ID:</strong>{" "}
+                {processingResult.processing_id}
+              </p>
+
+              <p>
+                <strong>Extracted Frames:</strong>{" "}
+                {processingResult.frame_extraction.extracted_frames}
+              </p>
+
+              <p>
+                <strong>Total Frames:</strong>{" "}
+                {processingResult.frame_extraction.total_frames}
+              </p>
+
+              <p>
+                <strong>FPS:</strong>{" "}
+                {processingResult.frame_extraction.fps}
+              </p>
+
+              <p>
+                <strong>Audio File:</strong>{" "}
+                {processingResult.audio_extraction.audio_filename}
+              </p>
+
+              <p>
+                <strong>Audio Duration:</strong>{" "}
+                {processingResult.audio_extraction.duration_seconds} seconds
+              </p>
+
+              <p>
+                <strong>Audio Format:</strong>{" "}
+                {processingResult.audio_extraction.format}
+              </p>
+
+              <p>
+                <strong>Sample Rate:</strong>{" "}
+                {processingResult.audio_extraction.sample_rate} Hz
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -256,7 +376,7 @@ const videoMetadata = uploadResult?.video_metadata;
                 <LoaderCircle size={15} />
                 Current stage
               </div>
-              <strong>Stage 03</strong>
+              <strong>Not started</strong>
             </div>
 
             <div className="progress-metric">
@@ -321,11 +441,11 @@ const videoMetadata = uploadResult?.video_metadata;
         <div>
           <strong>Demonstration mode</strong>
           <p>
-            This interface currently displays a sample analysis workflow.
-            The progress percentage and stage statuses are illustrative.
-            Actual frame extraction, eye reflection analysis, lip-sync
-            detection and report generation will be connected to the
-            Python backend later.
+            <p>
+  Video upload, validation, frame extraction and audio extraction
+  are connected to the Python backend. Further forensic detection
+  stages are awaiting implementation.
+</p>
           </p>
         </div>
       </div>

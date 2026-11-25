@@ -1,221 +1,504 @@
-
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ShieldCheck,
   ScanFace,
-  Eye,
-  EyeOff,
-  ArrowRight,
   Fingerprint,
-  FileSearch,
-  Activity,
+  ArrowRight,
+  Play,
+  BarChart3,
+  Database,
+  Zap,
+  BrainCircuit,
+  Search,
+  CheckCircle2,
+  ChevronDown,
 } from "lucide-react";
+import faceScanHero from "../../assets/face-scan-hero.png";
 import "./home.css";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const handleStartAnalysis = () => {
+    navigate("/new-analysis");
+  };
 
-  const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleGetStarted = () => {
     navigate("/dashboard");
   };
 
   return (
     <div className="home-page">
-      <nav className="home-navbar">
+
+      {/* ================= NAVBAR ================= */}
+      <header className="home-navbar">
         <a href="/" className="home-brand">
           <div className="home-brand-icon">
-            <ShieldCheck size={23} />
+            <ShieldCheck size={25} />
           </div>
-          <div>
+
+          <div className="home-brand-text">
             <h2>DEEPTRACE</h2>
             <span>FORENSIC INTELLIGENCE</span>
           </div>
         </a>
 
-        <div className="home-nav-links">
-          <a href="#about">About Us</a>
-          <a href="#technology">Technology</a>
-          <button onClick={() => navigate("/dashboard")}>
-            Explore Dashboard <ArrowRight size={16} />
-          </button>
-        </div>
-      </nav>
+        <nav className="home-nav-links">
+          <a href="#home" className="active">
+            Home
+          </a>
 
+          <a href="#about">
+            About
+          </a>
+
+          <a href="#technology">
+            Technology
+          </a>
+
+          <a href="#features">
+            Features
+          </a>
+
+          <a href="#faq">
+            FAQ
+          </a>
+
+          <button
+            className="home-get-started"
+            onClick={handleGetStarted}
+          >
+            Get Started
+            <ArrowRight size={17} />
+          </button>
+        </nav>
+      </header>
+
+      {/* ================= HERO ================= */}
       <main>
-        <section className="home-hero">
+
+        <section className="home-hero" id="home">
+
+          <div className="hero-background-glow glow-one" />
+          <div className="hero-background-glow glow-two" />
+
+          {/* LEFT CONTENT */}
           <div className="home-hero-content">
+
             <div className="home-eyebrow">
               <span className="home-eyebrow-dot" />
               AI-POWERED DIGITAL FORENSICS
             </div>
 
             <h1>
-              Trust what you
+              Trust what you{" "}
+              <span>see.</span>
               <br />
-              <span>see.</span> Verify what
-              <br />
-              you believe.
+              Verify what you{" "}
+              <span>believe.</span>
             </h1>
 
             <p className="home-hero-description">
-              Detect manipulated media through intelligent deepfake analysis
-              and digital forensic investigation. Bringing transparency,
-              explainability, and trust to digital content.
+              Detect manipulated media through intelligent deepfake
+              analysis and digital forensic investigation.
             </p>
 
+            {/* HERO BUTTONS */}
+            <div className="home-hero-actions">
+
+              <button
+                className="hero-primary-button"
+                onClick={handleStartAnalysis}
+              >
+                Start Analysis
+                <ArrowRight size={18} />
+              </button>
+
+              <button className="hero-demo-button">
+                <span className="demo-icon">
+                  <Play size={14} fill="currentColor" />
+                </span>
+                Watch Demo
+              </button>
+
+            </div>
+
+            {/* HERO FEATURES */}
             <div className="home-hero-points">
-              <div>
-                <ShieldCheck size={17} />
-                <span>Media authenticity</span>
+
+              <div className="hero-point">
+                <ShieldCheck size={25} />
+                <div>
+                  <strong>Media Authenticity</strong>
+                  <span>Made Simple</span>
+                </div>
               </div>
-              <div>
-                <ScanFace size={17} />
-                <span>AI-based detection</span>
+
+              <div className="hero-point">
+                <Zap size={27} />
+                <div>
+                  <strong>AI-Powered</strong>
+                  <span>Detection</span>
+                </div>
               </div>
-              <div>
-                <Fingerprint size={17} />
-                <span>Forensic evidence</span>
+
+              <div className="hero-point">
+                <Fingerprint size={27} />
+                <div>
+                  <strong>Forensic-Grade</strong>
+                  <span>Insights</span>
+                </div>
               </div>
+
             </div>
 
-            <a href="#about" className="home-learn-link">
-              Discover DEEPTRACE <ArrowRight size={16} />
-            </a>
           </div>
 
-          <div className="home-login-area">
-            <div className="home-login-card">
-              <div className="login-card-icon">
-                <ShieldCheck size={27} />
-              </div>
+          {/* RIGHT HERO IMAGE */}
+          <div className="home-hero-visual">
 
-              <p className="login-overline">WELCOME BACK</p>
-              <h2>Access your workspace</h2>
-              <p className="login-description">
-                Sign in to continue to your forensic intelligence dashboard.
-              </p>
+            <div className="hero-image-glow" />
 
-              <form onSubmit={handleSignIn}>
-                <label htmlFor="login-email">Email address</label>
-                <input
-                  id="login-email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                />
-
-                <div className="password-label-row">
-                  <label htmlFor="login-password">Password</label>
-                </div>
-
-                <div className="password-input-wrapper">
-                  <input
-                    id="login-password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={() => setShowPassword(!showPassword)}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-
-                <button type="submit" className="login-submit">
-                  Sign In <ArrowRight size={17} />
-                </button>
-              </form>
-
-              <div className="login-security-note">
-                <ShieldCheck size={15} />
-                <span>Secure forensic workspace</span>
-              </div>
+            <div className="hero-image-wrapper">
+              <img
+                src={faceScanHero}
+                alt="AI powered deepfake facial analysis"
+              />
             </div>
+
+            {/* Decorative orbital effects */}
+            <div className="hero-orbit orbit-one" />
+            <div className="hero-orbit orbit-two" />
+
           </div>
+
         </section>
 
-        <section className="home-about" id="about">
-          <div className="section-heading">
-            <span>ABOUT DEEPTRACE</span>
-            <h2>Understanding the truth behind digital media.</h2>
+        {/* ================= STATISTICS ================= */}
+        <section className="home-capability-strip">
+
+          <div className="capability-item">
+            <BarChart3 size={32} />
+
+            <div>
+              <strong>99.7%</strong>
+              <span>Detection Accuracy</span>
+            </div>
+          </div>
+
+          <div className="capability-divider" />
+
+          <div className="capability-item">
+            <Database size={32} />
+
+            <div>
+              <strong>1M+</strong>
+              <span>Media Analysed</span>
+            </div>
+          </div>
+
+          <div className="capability-divider" />
+
+          <div className="capability-item">
+            <Zap size={32} />
+
+            <div>
+              <strong>&lt; 2s</strong>
+              <span>Analysis Time</span>
+            </div>
+          </div>
+
+          <div className="capability-divider" />
+
+          <div className="capability-item">
+            <ShieldCheck size={32} />
+
+            <div>
+              <strong>Enterprise-Grade</strong>
+              <span>Security</span>
+            </div>
+          </div>
+
+        </section>
+
+        {/* ================= ABOUT / APPROACH ================= */}
+        <section
+          className="home-about"
+          id="about"
+        >
+
+          <div className="home-about-intro">
+
+            <span className="section-kicker">
+              OUR APPROACH
+            </span>
+
+            <h2>
+              Beyond Detection.
+              <br />
+              Towards <span>Digital Trust.</span>
+            </h2>
+
             <p>
-              As AI-generated and manipulated media become increasingly
-              realistic, identifying authentic content is more important
-              than ever.
+              DEEPTRACE combines cutting-edge AI with advanced
+              forensic techniques to uncover manipulated content
+              and provide transparent, explainable results.
             </p>
+
+            <a
+              href="#technology"
+              className="learn-more-button"
+            >
+              Learn More
+              <ArrowRight size={16} />
+            </a>
+
           </div>
 
-          <div className="home-about-grid">
+          {/* FEATURE CARDS */}
+          <div
+            className="home-about-grid"
+            id="features"
+          >
+
             <article className="about-card">
-              <div className="about-card-icon blue">
-                <ScanFace size={23} />
+
+              <div className="about-card-icon">
+                <BrainCircuit size={27} />
               </div>
-              <h3>Intelligent Detection</h3>
-              <p>
-                Uses AI-driven analysis to examine visual and audio-visual
-                inconsistencies that may indicate manipulated media.
-              </p>
+
+              <div className="about-card-content">
+                <h3>Intelligent Detection</h3>
+
+                <p>
+                  Identify deepfakes with advanced AI models.
+                </p>
+              </div>
+
+              <div className="card-arrow">
+                <ArrowRight size={17} />
+              </div>
+
             </article>
 
             <article className="about-card">
-              <div className="about-card-icon violet">
-                <FileSearch size={23} />
+
+              <div className="about-card-icon">
+                <Search size={27} />
               </div>
-              <h3>Digital Forensics</h3>
-              <p>
-                Examines media characteristics and presents useful
-                investigation details to support authenticity assessment.
-              </p>
+
+              <div className="about-card-content">
+                <h3>Digital Forensics</h3>
+
+                <p>
+                  Examine media with forensic precision.
+                </p>
+              </div>
+
+              <div className="card-arrow">
+                <ArrowRight size={17} />
+              </div>
+
             </article>
 
             <article className="about-card">
-              <div className="about-card-icon green">
-                <Activity size={23} />
+
+              <div className="about-card-icon">
+                <CheckCircle2 size={27} />
               </div>
-              <h3>Explainable Results</h3>
-              <p>
-                Presents detection findings through understandable signals,
-                confidence indicators, and forensic reports.
-              </p>
+
+              <div className="about-card-content">
+                <h3>Explainable Results</h3>
+
+                <p>
+                  Get clear insights and confidence scores.
+                </p>
+              </div>
+
+              <div className="card-arrow">
+                <ArrowRight size={17} />
+              </div>
+
             </article>
+
           </div>
+
         </section>
 
-        <section className="home-technology" id="technology">
-          <div>
-            <span>OUR APPROACH</span>
-            <h2>Beyond detection. Towards digital trust.</h2>
+        {/* ================= TECHNOLOGY ================= */}
+        <section
+          className="home-technology"
+          id="technology"
+        >
+
+          <div className="technology-heading">
+            <span className="section-kicker">
+              OUR TECHNOLOGY
+            </span>
+
+            <h2>
+              Intelligence behind
+              <br />
+              <span>digital authenticity.</span>
+            </h2>
           </div>
+
+          <div className="technology-content">
+
+            <div className="technology-item">
+              <ScanFace size={24} />
+              <div>
+                <h3>Facial Analysis</h3>
+                <p>
+                  Examining facial patterns and visual inconsistencies.
+                </p>
+              </div>
+            </div>
+
+            <div className="technology-item">
+              <Fingerprint size={24} />
+              <div>
+                <h3>Forensic Signals</h3>
+                <p>
+                  Extracting digital evidence from uploaded media.
+                </p>
+              </div>
+            </div>
+
+            <div className="technology-item">
+              <Zap size={24} />
+              <div>
+                <h3>AI Detection</h3>
+                <p>
+                  Analysing manipulated visual and audio-visual signals.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* ================= FAQ ================= */}
+        <section
+          className="home-faq"
+          id="faq"
+        >
+
+          <div className="faq-heading">
+            <span className="section-kicker">
+              FAQ
+            </span>
+
+            <h2>
+              Questions about
+              <br />
+              <span>DEEPTRACE?</span>
+            </h2>
+          </div>
+
+          <div className="faq-list">
+
+            <details>
+              <summary>
+                What is DEEPTRACE?
+                <ChevronDown size={19} />
+              </summary>
+
+              <p>
+                DEEPTRACE is an AI-powered deepfake detection and
+                digital forensic analysis platform.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                What type of media can be analysed?
+                <ChevronDown size={19} />
+              </summary>
+
+              <p>
+                The system is designed to analyse supported video
+                media and extract useful forensic information.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                Will the system explain its results?
+                <ChevronDown size={19} />
+              </summary>
+
+              <p>
+                Yes. DEEPTRACE is designed to present detection
+                findings together with understandable forensic
+                indicators and confidence information.
+              </p>
+            </details>
+
+          </div>
+
+        </section>
+
+        {/* ================= CTA ================= */}
+        <section className="home-final-cta">
+
+          <div className="cta-glow" />
+
+          <span className="section-kicker">
+            START YOUR INVESTIGATION
+          </span>
+
+          <h2>
+            Don't just watch.
+            <br />
+            <span>Verify.</span>
+          </h2>
+
           <p>
-            DEEPTRACE focuses on analysing facial and audio-visual signals,
-            including eye-reflection consistency and lip-sync patterns, to
-            support deepfake identification and forensic reporting.
+            Bring clarity and confidence to the digital media
+            you analyse.
           </p>
+
+          <button
+            className="hero-primary-button"
+            onClick={handleStartAnalysis}
+          >
+            Start Analysis
+            <ArrowRight size={18} />
+          </button>
+
         </section>
+
+        {/* ================= SCROLL INDICATOR ================= */}
+        <div className="home-scroll-indicator">
+          <div className="scroll-icon">
+            <span />
+          </div>
+
+          <span>Scroll to Explore</span>
+        </div>
+
       </main>
 
+      {/* ================= FOOTER ================= */}
       <footer className="home-footer">
+
         <div className="home-footer-brand">
-          <ShieldCheck size={19} />
+          <ShieldCheck size={20} />
           <span>DEEPTRACE</span>
         </div>
-        <p>AI-Powered Deepfake Detection & Digital Forensics</p>
-        <span className="footer-copy">© 2026 DEEPTRACE</span>
+
+        <p>
+          AI-Powered Deepfake Detection & Digital Forensics
+        </p>
+
+        <span className="footer-copy">
+          © 2026 DEEPTRACE
+        </span>
+
       </footer>
+
     </div>
   );
 };
