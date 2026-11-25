@@ -25,23 +25,33 @@ const Sidebar = () => {
       <div className="sidebar-section">
         <p className="sidebar-label">WORKSPACE</p>
 
-        <NavLink to="/" end className={({ isActive }) =>
-          `nav-item ${isActive ? "active" : ""}`
-        }>
+        <NavLink
+          to="/dashboard"
+          end
+          className={({ isActive }) =>
+            `nav-item ${isActive ? "active" : ""}`
+          }
+        >
           <LayoutDashboard size={19} />
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/new-analysis" className={({ isActive }) =>
-          `nav-item ${isActive ? "active" : ""}`
-        }>
+        <NavLink
+          to="/new-analysis"
+          className={({ isActive }) =>
+            `nav-item ${isActive ? "active" : ""}`
+          }
+        >
           <Upload size={19} />
           <span>New Analysis</span>
         </NavLink>
 
-        <NavLink to="/history" className={({ isActive }) =>
-          `nav-item ${isActive ? "active" : ""}`
-        }>
+        <NavLink
+          to="/history"
+          className={({ isActive }) =>
+            `nav-item ${isActive ? "active" : ""}`
+          }
+        >
           <History size={19} />
           <span>Analysis History</span>
         </NavLink>
@@ -50,18 +60,24 @@ const Sidebar = () => {
       <div className="sidebar-section">
         <p className="sidebar-label">INVESTIGATION</p>
 
-        <NavLink to="/reports" className={({ isActive }) =>
-          `nav-item ${isActive ? "active" : ""}`
-        }>
+        <NavLink
+          to="/reports"
+          className={({ isActive }) =>
+            `nav-item ${isActive ? "active" : ""}`
+          }
+        >
           <FileText size={19} />
           <span>Forensic Reports</span>
         </NavLink>
       </div>
 
       <div className="sidebar-bottom">
-        <NavLink to="/settings" className={({ isActive }) =>
-          `nav-item ${isActive ? "active" : ""}`
-        }>
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `nav-item ${isActive ? "active" : ""}`
+          }
+        >
           <Settings size={19} />
           <span>Settings</span>
         </NavLink>
@@ -75,6 +91,4 @@ const Sidebar = () => {
   );
 };
 
-
 export default Sidebar;
-

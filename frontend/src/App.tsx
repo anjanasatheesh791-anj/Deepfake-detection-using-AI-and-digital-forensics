@@ -1,7 +1,9 @@
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
+import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import NewAnalysis from "./pages/NewAnalysis/NewAnalysis";
 import AnalysisProgress from "./pages/AnalysisProgress/AnalysisProgress";
@@ -18,19 +20,75 @@ import "./pages/Results/results.css";
 function App() {
   return (
     <BrowserRouter>
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/new-analysis" element={<NewAnalysis />} />
-          <Route path="/analysis-progress" element={<AnalysisProgress />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/history" element={<AnalysisHistory />} />
-          <Route path="/reports" element={<ForensicReports />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
-      </MainLayout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <MainLayout>
+              <Dashboard />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/new-analysis"
+          element={
+            <MainLayout>
+              <NewAnalysis />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/analysis-progress"
+          element={
+            <MainLayout>
+              <AnalysisProgress />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/results"
+          element={
+            <MainLayout>
+              <Results />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/history"
+          element={
+            <MainLayout>
+              <AnalysisHistory />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <MainLayout>
+              <ForensicReports />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <MainLayout>
+              <Settings />
+            </MainLayout>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+
